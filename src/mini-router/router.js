@@ -1,9 +1,14 @@
+import { ref } from "vue"
 import RouterLink from "./RouterLink"
 import RouterView from "./RouterView"
 
 export const createRouter = (options) => {
   // 1.创建router实例
   const router = {
+    // 初始化options，保存router的配置项
+    options,
+    // 初始化current，保存当前的hash值
+    current: ref(window.location.hash || "/"),
     // 2.实现install方法,接收app实例
     install(app) {
       // 保存上下文this，供注册全局变量时使用
@@ -15,5 +20,12 @@ export const createRouter = (options) => {
       app.config.globalProperties.$router = router
     },
   }
+
+  // 监听hashchange事件
+  window.addEventListener("hashchange", () => {
+    // 将hash变化的结果保存在router实例的current变量中，供后续<router-view>使用
+    router.current.value = window.location.hash.slice(1)
+  })
+
   return router
 }
