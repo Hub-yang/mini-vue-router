@@ -5,10 +5,10 @@ import RouterView from "./RouterView"
 export const createRouter = (options) => {
   // 1.创建router实例
   const router = {
-    // 初始化options，保存router的配置项
+    // 初始化options，保存传入的配置项
     options,
-    // 初始化current，保存当前的hash值
-    current: ref(window.location.hash || "/"),
+    // 初始化current，保存当前的hash值，供router-view判断使用，注意current需要做响应式，是因为当它发生改变时，router-view的渲染函数需要重新执行
+    current: ref(window.location.hash.slice(1) || "/"),
     // 2.实现install方法,接收app实例
     install(app) {
       // 保存上下文this，供注册全局变量时使用
